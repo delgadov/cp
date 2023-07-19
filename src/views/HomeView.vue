@@ -54,7 +54,7 @@ export default {
             isLoading.value[product.id] = false
           })
       } else {
-        console.log('Error')
+        router.push('/login')
       }
     }
 
