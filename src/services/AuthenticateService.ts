@@ -1,8 +1,8 @@
 import axios from 'axios'
 
-const userAuth = 'http://localhost:8080/rest/api/v1/cp/auth/user'
-const googleAuth = 'http://localhost:8080/rest/api/v1/cp/auth/google'
-const logged = 'http://localhost:8080/rest/api/v1/cp/auth/logged'
+const userAuth = 'https://cp-service.onrender.com/rest/api/v1/cp/auth/user'
+const googleAuth = 'https://cp-service.onrender.com/rest/api/v1/cp/auth/google'
+const logged = 'https://cp-service.onrender.com/rest/api/v1/cp/auth/logged'
 
 export function authenticateUser(auth: any) {
   return axios.post(`${userAuth}`, auth)

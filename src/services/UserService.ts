@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const baseURL = 'http://localhost:8080/rest/api/v1/cp'
+const baseURL = 'https://cp-service.onrender.com/rest/api/v1/cp'
 
 export function saveUser(user: any) {
   return axios.post(`${baseURL}`, user)

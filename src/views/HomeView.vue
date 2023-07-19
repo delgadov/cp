@@ -26,39 +26,37 @@ export default {
     }
 
     const gift = async (product: { id: string }) => {
-  isLoading.value[product.id] = true
+      isLoading.value[product.id] = true
 
-  const email = localStorage.getItem('email')
-  const sessionToken = localStorage.getItem('sessionToken')
+      const email = localStorage.getItem('email')
+      const sessionToken = localStorage.getItem('sessionToken')
 
-  if (email) {
-    const loggedInRequest = {
-      email,
-      sessionToken: sessionToken || ''
-    }
+      if (email) {
+        const loggedInRequest = {
+          email,
+          sessionToken: sessionToken || ''
+        }
 
-    isLoggedIn(loggedInRequest)
-      .then((response: any) => {
-        moveProductToUser(product.id, loggedInRequest.email)
+        isLoggedIn(loggedInRequest)
           .then((response: any) => {
-            products.value = products.value.filter((p: any) => p.id != product.id)
+            moveProductToUser(product.id, loggedInRequest.email)
+              .then((response: any) => {
+                products.value = products.value.filter((p: any) => p.id != product.id)
+              })
+              .catch((err: any) => {
+                console.log(err)
+              })
           })
           .catch((err: any) => {
-            console.log(err)
+            router.push('/login')
           })
-      })
-      .catch((err: any) => {
-        router.push('/login')
-      })
-      .finally(() => {
-        isLoading.value[product.id] = false
-      })
-  } else {
-    console.log("Error");
-    
-  }
-}
-
+          .finally(() => {
+            isLoading.value[product.id] = false
+          })
+      } else {
+        console.log('Error')
+      }
+    }
 
     return {
       products,

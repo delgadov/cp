@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const baseURL = 'http://localhost:8080/rest/api/v1/product'
+const baseURL = 'https://cp-service.onrender.com/rest/api/v1/product'
 const allProducts = baseURL + '/all'
 const allAvailableProducts = baseURL + '/available'
 
