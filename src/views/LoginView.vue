@@ -67,7 +67,7 @@ export default {
 
       authenticateGoogle(auth)
         .then((response: any) => {
-          sessionToken.value = response.data.token
+          sessionToken.value = response.data.sessionToken
           localStorage.setItem('sessionToken', sessionToken.value)
           localStorage.setItem('email', response.data.email)
           store.setLoggedIn(true)
