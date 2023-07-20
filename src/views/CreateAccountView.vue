@@ -137,6 +137,7 @@ export default {
     function fillFormFieldsFromGoogle(credentials: any) {
       const fullName = credentials.name
       const spaceIndex = fullName.indexOf(' ')
+      
 
       firstName.value = fullName.substring(0, spaceIndex)
       surname.value = fullName.substring(spaceIndex + 1)
@@ -144,6 +145,8 @@ export default {
     }
 
     const handleGoogleLogin = (credentials: any) => {
+      console.log("here");
+      
       fillFormFieldsFromGoogle(credentials)
     }
 
@@ -182,7 +185,7 @@ export default {
       <h2>Criar Conta</h2>
       <form @submit.prevent="createAccount">
         <div class="glogin-area">
-          <GLogin @credential-success="handleGoogleLogin" />
+          <GLogin @credentials-success="handleGoogleLogin" />
         </div>
         <div class="or-line">
           <div class="or-line-inner"></div>
@@ -227,6 +230,7 @@ export default {
                   ? 'password-toggle-btn hide-password'
                   : 'password-toggle-btn show-password'
               "
+              type="button"
             ></button>
             <p v-if="validationMessage" class="error-message">{{ validationMessage }}</p>
           </div>
@@ -245,10 +249,10 @@ export default {
             {{ confirmPasswordErrorMessage }}
           </p>
         </div>
-        <button class="create-account-button" :disabled="!canCreateAccount" tabindex="5">
+        <button class="create-account-button" :disabled="!canCreateAccount" tabindex="5" v-if="!isLoading">
           Criar Conta
         </button>
-        <LoaderComponent v-if="isLoading" />
+        <LoaderComponent v-else/>
         <p v-if="exceptionMessage" class="error-message">{{ exceptionMessage }}</p>
       </form>
     </div>
