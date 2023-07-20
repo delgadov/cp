@@ -137,14 +137,13 @@ export default {
     function fillFormFieldsFromGoogle(credentials: any) {
       const fullName = credentials.name
       const spaceIndex = fullName.indexOf(' ')
-      
 
       firstName.value = fullName.substring(0, spaceIndex)
       surname.value = fullName.substring(spaceIndex + 1)
       email.value = credentials.email
     }
 
-    const handleGoogleLogin = (credentials: any) => {      
+    const handleGoogleLogin = (credentials: any) => {
       fillFormFieldsFromGoogle(credentials)
     }
 
@@ -192,7 +191,13 @@ export default {
         </div>
         <div class="form-group">
           <label for="firstName">Primeiro nome</label>
-          <input type="text" id="firstName" v-model="firstName" tabindex="1" :disabled="isLoading"/>
+          <input
+            type="text"
+            id="firstName"
+            v-model="firstName"
+            tabindex="1"
+            :disabled="isLoading"
+          />
         </div>
         <div class="form-group">
           <label for="surname">Sobrenome</label>
@@ -206,7 +211,13 @@ export default {
         </div>
         <div class="form-group">
           <label for="email">Email</label>
-          <input type="email" id="email" v-model="email" :disabled="!surnameFill  || isLoading" tabindex="3" />
+          <input
+            type="email"
+            id="email"
+            v-model="email"
+            :disabled="!surnameFill || isLoading"
+            tabindex="3"
+          />
           <p v-if="emailMessage" class="error-message">{{ emailMessage }}</p>
         </div>
         <div class="form-group">
@@ -247,10 +258,15 @@ export default {
             {{ confirmPasswordErrorMessage }}
           </p>
         </div>
-        <button class="create-account-button" :disabled="!canCreateAccount" tabindex="5" v-if="!isLoading">
+        <button
+          class="create-account-button"
+          :disabled="!canCreateAccount"
+          tabindex="5"
+          v-if="!isLoading"
+        >
           Criar Conta
         </button>
-        <LoaderComponent v-else/>
+        <LoaderComponent v-else />
         <p v-if="exceptionMessage" class="error-message">{{ exceptionMessage }}</p>
       </form>
     </div>
