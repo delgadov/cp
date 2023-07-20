@@ -17,9 +17,13 @@ export default {
     const fetchProducts = async () => {
       const response: any = await getAllAvailableProducts()
       products.value = response.data
+      isLoading.value = false
     }
 
     onMounted(fetchProducts)
+    onMounted(() => {
+      isLoading.value = true
+    })
 
     const getDecodedImage = (encodedImage: any) => {
       return `data:image/png;base64,${encodedImage}`
@@ -72,7 +76,16 @@ export default {
 <template>
   <main>
     <div class="product-grid">
-      <div class="product" v-for="product in products" :key="product.id">
+      <div v-if="isLoading" class="product skeleton" v-for="i in 5">
+        <div class="skeleton-img"></div>
+        <div class="skeleton-title"></div>
+        <div class="skeleton-description"></div>
+        <div class="button-container">
+          <div class="skeleton-button"></div>
+        </div>
+      </div>
+
+      <div class="product loading" v-for="product in products" :key="product.id">
         <div class="product-img">
           <img :src="getDecodedImage(product.encodedImage)" alt="Product Image" />
         </div>
@@ -131,7 +144,47 @@ export default {
   box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.2);
   transition: all 0.3s ease 0s;
 }
+@keyframes shimmer {
+  0% {
+    background-position: -12rem 0;
+  }
+  100% {
+    background-position: 24rem 0;
+  }
+}
 
+.product.skeleton {
+  background: linear-gradient(to right, #fff 1%, #ccc 10%, #fff 20%);
+  background-size: 400% 100%;
+  animation: shimmer 1.5s linear infinite;
+}
+.skeleton-img {
+  height: 9em;
+  width: 12em;
+  background-color: #e0e0e0;
+}
+
+.skeleton-title {
+  height: 3em;
+  width: 100%;
+  margin-top: 1em;
+  background-color: #e0e0e0;
+}
+
+.skeleton-description {
+  height: 4.51rem;
+  width: 100%;
+  margin-top: 0.5em;
+  background-color: #e0e0e0;
+}
+
+.skeleton-button {
+  height: 2.5em;
+  width: 8em;
+  margin-top: 1em;
+  width: 100%;
+  background-color: #e0e0e0;
+}
 .product:hover {
   box-shadow: 0px 10px 20px 0px rgba(0, 0, 0, 0.2);
 }
