@@ -12,17 +12,18 @@ export default {
   data() {
     const products: any = ref([])
     const isLoading: any = ref({})
+    const isLoadingPage = ref(false)
     const router = useRouter()
 
     const fetchProducts = async () => {
       const response: any = await getAllAvailableProducts()
       products.value = response.data
-      isLoading.value = false
+      isLoadingPage.value = false
     }
 
     onMounted(fetchProducts)
     onMounted(() => {
-      isLoading.value = true
+      isLoadingPage.value = true
     })
 
     const getDecodedImage = (encodedImage: any) => {
@@ -67,7 +68,8 @@ export default {
       getDecodedImage,
       gift,
       LoaderComponent,
-      isLoading
+      isLoading,
+      isLoadingPage
     }
   }
 }
@@ -76,7 +78,7 @@ export default {
 <template>
   <main>
     <div class="product-grid">
-      <div v-if="isLoading" class="product skeleton" v-for="i in 5">
+      <div v-if="isLoadingPage" class="product skeleton" v-for="i in 5">
         <div class="skeleton-img"></div>
         <div class="skeleton-title"></div>
         <div class="skeleton-description"></div>
