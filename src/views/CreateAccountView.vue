@@ -144,9 +144,7 @@ export default {
       email.value = credentials.email
     }
 
-    const handleGoogleLogin = (credentials: any) => {
-      console.log("here");
-      
+    const handleGoogleLogin = (credentials: any) => {      
       fillFormFieldsFromGoogle(credentials)
     }
 
@@ -194,7 +192,7 @@ export default {
         </div>
         <div class="form-group">
           <label for="firstName">Primeiro nome</label>
-          <input type="text" id="firstName" v-model="firstName" tabindex="1" />
+          <input type="text" id="firstName" v-model="firstName" tabindex="1" :disabled="isLoading"/>
         </div>
         <div class="form-group">
           <label for="surname">Sobrenome</label>
@@ -202,13 +200,13 @@ export default {
             type="text"
             id="surname"
             v-model="surname"
-            :disabled="!firstNameFill"
+            :disabled="!firstNameFill || isLoading"
             tabindex="2"
           />
         </div>
         <div class="form-group">
           <label for="email">Email</label>
-          <input type="email" id="email" v-model="email" :disabled="!surnameFill" tabindex="3" />
+          <input type="email" id="email" v-model="email" :disabled="!surnameFill  || isLoading" tabindex="3" />
           <p v-if="emailMessage" class="error-message">{{ emailMessage }}</p>
         </div>
         <div class="form-group">
@@ -220,7 +218,7 @@ export default {
               v-model="password"
               @input="validatePassword"
               :type="passwordFieldType"
-              :disabled="!emailFill"
+              :disabled="!emailFill || isLoading"
               tabindex="3"
             />
             <button
@@ -242,7 +240,7 @@ export default {
             id="confirmePassword"
             v-model="confirmedPassword"
             @input="validateConfirmPassword"
-            :disabled="!passwordFill"
+            :disabled="!passwordFill || isLoading"
             tabindex="4"
           />
           <p v-if="confirmPasswordErrorMessage" class="error-message">
