@@ -3,7 +3,7 @@ import LoginView from '@/views/LoginView.vue'
 import HomeViewVue from '@/views/HomeView.vue'
 import CreateAccount from '@/views/CreateAccountView.vue'
 import AdminView from '@/views/AdminView.vue'
-import MyGiftView from '@/views/MyGiftView.vue'
+import MyProductsView from '@/views/MyProductsView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -29,9 +29,9 @@ const router = createRouter({
       component: AdminView
     },
     {
-      path: '/myGift',
-      name: 'myGift',
-      component: MyGiftView
+      path: '/my-products',
+      name: 'my-products',
+      component: MyProductsView
     }
   ]
 })
