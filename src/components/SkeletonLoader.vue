@@ -106,5 +106,4 @@ export default {
   margin-top: 1em;
   width: 100%;
   background-color: #e0e0e0;
-}
-</style>
+}</style>
