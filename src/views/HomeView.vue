@@ -79,7 +79,7 @@ export default {
 <template>
   <main>
     <div class="product-grid">
-      <SkeletonLoader :isLoadingPage="isLoadingPage"/>
+      <SkeletonLoader :isLoadingPage="isLoadingPage" />
       <TransitionGroup name="product-fade">
         <div class="product loading" v-for="product in products" :key="product.id">
           <div class="product-img">

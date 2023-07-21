@@ -68,7 +68,7 @@ export default {
     background-position: 24rem 0;
   }
 }
-.product.skeleton {
+.skeleton {
   background: linear-gradient(to right, #fff 1%, #ccc 10%, #fff 20%);
   background-size: 400% 100%;
   animation: shimmer 1.5s linear infinite;
