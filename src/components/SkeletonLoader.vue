@@ -47,14 +47,18 @@ export default {
 </script>
 
 <template>
-  <div v-if="isLoadingPage" class="product skeleton" v-for="i in numberOfSkeletons">
-    <div class="skeleton-img"></div>
-    <div class="skeleton-title"></div>
-    <div class="skeleton-description"></div>
-    <div class="button-container">
-      <div class="skeleton-button"></div>
+  <TransitionGroup name="product-fade">
+    <div class="product-grid">
+      <div v-if="isLoadingPage" class="product skeleton" v-for="i in numberOfSkeletons" :key="i">
+        <div class="skeleton-img"></div>
+        <div class="skeleton-title"></div>
+        <div class="skeleton-description"></div>
+        <div class="button-container">
+          <div class="skeleton-button"></div>
+        </div>
+      </div>
     </div>
-  </div>
+  </TransitionGroup>
 </template>
 
 <style scoped>
@@ -64,15 +68,18 @@ export default {
   0% {
     background-position: -12rem 0;
   }
+
   100% {
     background-position: 24rem 0;
   }
 }
+
 .skeleton {
   background: linear-gradient(to right, #fff 1%, #ccc 10%, #fff 20%);
   background-size: 400% 100%;
   animation: shimmer 1.5s linear infinite;
 }
+
 .skeleton-img {
   height: 9em;
   width: 12em;
