@@ -1,5 +1,5 @@
 <script lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed, watch } from 'vue'
 import { getAllAvailableProducts, moveProductToUser } from '@/services/ProductService.js'
 import { isLoggedIn } from '@/services/AuthenticateService.js'
 import LoaderComponent from '@/components/LoaderComponent.vue'
@@ -14,6 +14,7 @@ export default {
     const isLoading: any = ref({})
     const isLoadingPage = ref(false)
     const router = useRouter()
+    const windowSize = ref(window.innerWidth)
 
     const fetchProducts = async () => {
       const response: any = await getAllAvailableProducts()
@@ -24,6 +25,11 @@ export default {
     onMounted(fetchProducts)
     onMounted(() => {
       isLoadingPage.value = true
+    })
+    onMounted(() => {
+      window.addEventListener('resize', () => {
+        windowSize.value = window.innerWidth
+      })
     })
 
     const getDecodedImage = (encodedImage: any) => {
@@ -61,13 +67,40 @@ export default {
       }
     }
 
+    function toEm(value: number) {
+      return value * 16
+    }
+
+    function calculateNumberOfSkeletons() {
+      if (window.innerWidth > toEm(92)) {
+        return 5
+      }
+      if (window.innerWidth > toEm(73)) {
+        return 4
+      }
+      if (window.innerWidth > toEm(54)) {
+        return 3
+      }
+      if (window.innerWidth > toEm(35)) {
+        return 2
+      }
+      return 1
+    }
+
+    const numberOfSkeletons = ref(calculateNumberOfSkeletons())
+
+    watch(windowSize, () => {
+      numberOfSkeletons.value = calculateNumberOfSkeletons()
+    })
+
     return {
       products,
       getDecodedImage,
       gift,
       LoaderComponent,
       isLoading,
-      isLoadingPage
+      isLoadingPage,
+      numberOfSkeletons
     }
   }
 }
@@ -76,7 +109,7 @@ export default {
 <template>
   <main>
     <div class="product-grid">
-      <div v-if="isLoadingPage" class="product skeleton" v-for="i in 5">
+      <div v-if="isLoadingPage" class="product skeleton" v-for="i in numberOfSkeletons">
         <div class="skeleton-img"></div>
         <div class="skeleton-title"></div>
         <div class="skeleton-description"></div>
