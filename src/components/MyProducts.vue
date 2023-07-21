@@ -2,7 +2,7 @@
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useConnectionStore } from '@/store'
-import { getAllAvailableProducts, moveProductToUser } from '@/services/ProductService.js'
+import { getUserProducts, removeProductFromUser } from '@/services/ProductService.js'
 import { isLoggedIn } from '@/services/AuthenticateService.js'
 import LoaderComponent from './LoaderComponent.vue'
 
@@ -15,12 +15,28 @@ export default {
     const isLoading: any = ref({})
     const router = useRouter()
     const store = useConnectionStore()
+    const noProductMsg = ref('')
+
+    const email = localStorage.getItem('email')
 
     const fetchProducts = async () => {
       store.setLoadingPage(true)
-      const response: any = await getAllAvailableProducts()
 
+      if (!email) {
+        return
+      }
+
+      const response: any = await getUserProducts(email)
       products.value = response.data
+
+      if (products.value.length === 0) {
+        noProductMsg.value = 'Você ainda não tem presentes'
+      } else {
+        noProductMsg.value = ''
+      }
+
+      console.log(products.length)
+
       store.setLoadingPage(false)
     }
 
@@ -28,7 +44,7 @@ export default {
       return `data:image/png;base64,${encodedImage}`
     }
 
-    const gift = async (product: { id: string }) => {
+    const removeProduct = async (product: { id: string }) => {
       isLoading.value[product.id] = true
 
       const email = localStorage.getItem('email')
@@ -42,7 +58,7 @@ export default {
 
         isLoggedIn(loggedInRequest)
           .then((response: any) => {
-            moveProductToUser(product.id, loggedInRequest.email)
+            removeProductFromUser(product.id)
               .then((response: any) => {
                 products.value = products.value.filter((p: any) => p.id != product.id)
                 isLoading.value[product.id] = false
@@ -61,7 +77,15 @@ export default {
 
     onMounted(fetchProducts)
 
-    return { products, getDecodedImage, gift, LoaderComponent, isLoading, store }
+    return {
+      products,
+      getDecodedImage,
+      removeProduct,
+      LoaderComponent,
+      isLoading,
+      store,
+      noProductMsg
+    }
   }
 }
 </script>
@@ -76,14 +100,24 @@ export default {
         <h3 class="product-title">{{ product.title }}</h3>
         <span>{{ product.description }}</span>
         <div class="button-container">
-          <button @click="gift(product)" v-if="!isLoading[product.id]">Presentar</button>
+          <button @click="removeProduct(product)" v-if="!isLoading[product.id]">Remover</button>
           <LoaderComponent v-else />
         </div>
       </div>
     </TransitionGroup>
   </div>
+  <h3 class="empty-message" v-if="noProductMsg">{{ noProductMsg }}</h3>
 </template>
 
 <style scoped>
 @import '@/assets/product-style.css';
+.empty-message {
+  /* Adjust the margin and padding as needed */
+  margin: 0;
+  padding: 1rem;
+  font-size: 1rem;
+  color: #555;
+  width: 100%;
+  text-align: center;
+}
 </style>

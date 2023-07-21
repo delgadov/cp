@@ -65,7 +65,7 @@ export default {
       <nav class="header-nav">
         <ul>
           <li>
-            <RouterLink class="header-hover" to="/myGift">Meus Presentes</RouterLink>
+            <RouterLink class="header-hover" to="/my-products">Meus Presentes</RouterLink>
           </li>
           <li v-if="!store.isLoggedIn">
             <RouterLink class="login" to="/login">Entrar</RouterLink>

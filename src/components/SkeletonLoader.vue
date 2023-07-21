@@ -47,7 +47,7 @@ export default {
 </script>
 
 <template>
-  <TransitionGroup name="product-fade">
+  <TransitionGroup name="skeleton-fade">
     <div class="product-grid">
       <div v-if="isLoadingPage" class="product skeleton" v-for="i in numberOfSkeletons" :key="i">
         <div class="skeleton-img"></div>
@@ -106,4 +106,15 @@ export default {
   margin-top: 1em;
   width: 100%;
   background-color: #e0e0e0;
-}</style>
+}
+
+.skeleton-fade-enter-active,
+.skeleton-fade-leave-active {
+  transition: opacity 0.3s ease;
+}
+
+.skeleton-fade-enter,
+.skeleton-fade-leave-to {
+  opacity: 0;
+}
+</style>
