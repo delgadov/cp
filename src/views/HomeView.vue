@@ -194,11 +194,16 @@ export default {
 .product-img {
   height: 9em;
   width: 12em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
 }
 
 .product-img img {
   width: 100%;
   height: 100%;
+  object-fit: contain;
   padding: 0;
 }
 
@@ -243,7 +248,6 @@ export default {
   text-decoration: none;
   color: #fff;
   background-color: #ff4081;
-  /* Pink */
   border-radius: 0.5em;
   border: none;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
