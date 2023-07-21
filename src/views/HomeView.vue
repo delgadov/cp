@@ -85,17 +85,19 @@ export default {
         </div>
       </div>
 
-      <div class="product loading" v-for="product in products" :key="product.id">
-        <div class="product-img">
-          <img :src="getDecodedImage(product.encodedImage)" alt="Product Image" />
+      <TransitionGroup name="product-fade">
+        <div class="product loading" v-for="product in products" :key="product.id">
+          <div class="product-img">
+            <img :src="getDecodedImage(product.encodedImage)" alt="Product Image" />
+          </div>
+          <h3 class="product-title">{{ product.title }}</h3>
+          <span>{{ product.description }}</span>
+          <div class="button-container">
+            <button @click="gift(product)" v-if="!isLoading[product.id]">Presentar</button>
+            <LoaderComponent v-else />
+          </div>
         </div>
-        <h3 class="product-title">{{ product.title }}</h3>
-        <span>{{ product.description }}</span>
-        <div class="button-container">
-          <button @click="gift(product)" v-if="!isLoading[product.id]">Presentar</button>
-          <LoaderComponent v-else />
-        </div>
-      </div>
+      </TransitionGroup>
     </div>
   </main>
 </template>
@@ -264,5 +266,15 @@ export default {
   text-align: center;
   position: relative;
   transition: all 0.3s ease;
+}
+
+.product-fade-enter-active,
+.product-fade-leave-active {
+  transition: opacity 0.3s ease;
+}
+
+.product-fade-enter,
+.product-fade-leave-to {
+  opacity: 0;
 }
 </style>
