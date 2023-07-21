@@ -35,8 +35,6 @@ export default {
         noProductMsg.value = ''
       }
 
-      console.log(products.length)
-
       store.setLoadingPage(false)
     }
 
