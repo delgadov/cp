@@ -47,6 +47,7 @@ export default {
             moveProductToUser(product.id, loggedInRequest.email)
               .then((response: any) => {
                 products.value = products.value.filter((p: any) => p.id != product.id)
+                isLoading.value[product.id] = false
               })
               .catch((err: any) => {
                 console.log(err)
@@ -54,9 +55,6 @@ export default {
           })
           .catch((err: any) => {
             router.push('/login')
-          })
-          .finally(() => {
-            isLoading.value[product.id] = false
           })
       } else {
         router.push('/login')
