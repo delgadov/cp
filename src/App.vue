@@ -53,7 +53,7 @@ export default {
 
 <template>
   <RouterLink to="/" style="text-decoration: none; color: inherit">
-    <MainImage coupleName="Vinicius e Larissa" date="31.07" />
+    <MainImage coupleName="Vinicius e Larissa" date="30.07" />
   </RouterLink>
   <header>
     <div class="header-container">
