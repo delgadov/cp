@@ -13,3 +13,17 @@ export const useTokenStore = defineStore('tokens', {
     }
   }
 })
+
+export const useConnectionStore = defineStore('loading', {
+  state: () => ({
+    isLoadingPage: false
+  }),
+  actions: {
+    setLoadingPage(value: boolean) {
+      this.isLoadingPage = value
+    },
+    getLoadingPage() {
+      return this.isLoadingPage
+    }
+  }
+})
