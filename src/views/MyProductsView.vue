@@ -3,6 +3,7 @@ import { ref, watch } from 'vue'
 import SkeletonLoader from '@/components/SkeletonLoader.vue'
 import { useConnectionStore } from '@/store'
 import MyProducts from '@/components/MyProducts.vue'
+import { useRouter } from 'vue-router'
 
 export default {
   components: {
@@ -10,6 +11,14 @@ export default {
     MyProducts
   },
   data() {
+    const email = localStorage.getItem('email')
+    const sessionToken = localStorage.getItem('sessionToken')
+
+    if (!email && !sessionToken) {
+      const router = useRouter()
+      router.push('/login')
+    }
+
     const store = useConnectionStore()
 
     const isLoadingPage = ref(false)
