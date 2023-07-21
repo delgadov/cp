@@ -3,6 +3,7 @@ import MainImage from '@/components/MainImage.vue'
 import { onMounted, ref, watch } from 'vue'
 import { RouterLink, RouterView, useRouter } from 'vue-router'
 import { useTokenStore } from '@/store'
+import { pingDatabase } from '@/services/UserService.js';
 
 export default {
   components: {
@@ -19,12 +20,25 @@ export default {
       isLoggedIn.value = !!sessionToken
     })
 
+    onMounted(() => {
+      setInterval(pingDb, 15 * 1000)
+    })
+
     const logout = () => {
       localStorage.removeItem('sessionToken')
       localStorage.removeItem('email')
       store.setLoggedIn(false)
       isLoggedIn.value = false
       router.push('/')
+    }
+
+    const pingDb = () => {
+      pingDatabase()
+      .then((response: any) => {
+        console.log(response);
+      }).catch((err: any) => {
+        console.log(err);
+      });
     }
 
     return {
