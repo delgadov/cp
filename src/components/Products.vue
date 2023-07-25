@@ -5,16 +5,26 @@ import { useConnectionStore } from '@/store'
 import { getAllAvailableProducts, moveProductToUser } from '@/services/ProductService.js'
 import { isLoggedIn } from '@/services/AuthenticateService.js'
 import LoaderComponent from './LoaderComponent.vue'
+import PopUp from './PopUp.vue'
 
 export default {
   components: {
-    LoaderComponent
+    PopUp
   },
   data() {
     const products: any = ref([])
-    const isLoading: any = ref({})
-    const router = useRouter()
     const store = useConnectionStore()
+    const showPopup = ref(false)
+    const selectedProduct = ref(Object)
+
+    const openPopup = (product: any) => {
+      selectedProduct.value = product
+      showPopup.value = true
+    }
+
+    const closePopup = () => {
+      showPopup.value = false
+    }
 
     const fetchProducts = async () => {
       store.setLoadingPage(true)
@@ -28,40 +38,23 @@ export default {
       return `data:image/png;base64,${encodedImage}`
     }
 
-    const gift = async (product: { id: string }) => {
-      isLoading.value[product.id] = true
-
-      const email = localStorage.getItem('email')
-      const sessionToken = localStorage.getItem('sessionToken')
-
-      if (email) {
-        const loggedInRequest = {
-          email,
-          sessionToken: sessionToken || ''
-        }
-
-        isLoggedIn(loggedInRequest)
-          .then((response: any) => {
-            moveProductToUser(product.id, loggedInRequest.email)
-              .then((response: any) => {
-                products.value = products.value.filter((p: any) => p.id != product.id)
-                isLoading.value[product.id] = false
-              })
-              .catch((err: any) => {
-                console.log(err)
-              })
-          })
-          .catch((err: any) => {
-            router.push('/login')
-          })
-      } else {
-        router.push('/login')
-      }
+    const moveCompleted = (id: string) => {
+      products.value = products.value.filter((p: any) => p.id != id)
+      showPopup.value = false
     }
 
     onMounted(fetchProducts)
 
-    return { products, getDecodedImage, gift, LoaderComponent, isLoading, store }
+    return {
+      products,
+      getDecodedImage,
+      store,
+      openPopup,
+      closePopup,
+      showPopup,
+      selectedProduct,
+      moveCompleted
+    }
   }
 }
 </script>
@@ -76,11 +69,16 @@ export default {
         <h3 class="product-title">{{ product.title }}</h3>
         <span>{{ product.description }}</span>
         <div class="button-container">
-          <button @click="gift(product)" v-if="!isLoading[product.id]">Presentar</button>
-          <LoaderComponent v-else />
+          <button @click="openPopup(product)">Presentar</button>
         </div>
       </div>
     </TransitionGroup>
+    <PopUp
+      v-if="showPopup"
+      :product="selectedProduct"
+      @close="closePopup"
+      @completed="moveCompleted"
+    />
   </div>
 </template>
 
