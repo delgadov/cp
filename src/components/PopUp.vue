@@ -185,7 +185,7 @@ export default {
 .modal-default-close-button {
   position: absolute;
   top: -0.25rem;
-  right: 0.5rem;
+  right: -0.5rem;
   width: 2rem;
   height: 2rem;
   display: flex;
